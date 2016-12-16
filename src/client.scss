@@ -1,0 +1,374 @@
+@import "style/base";
+
+$white-color: white;
+$black-color: #1a1a1a;
+$background-color: #2d2d2d;
+$grey-color: #f0f0f0;
+$separator-color: #bebebe;
+$select-color: #ffd700;
+
+$elements: stars, forest, overlay, snow, moon, rules, walker, face, photo, share, gallery, gallery-share, buttons, flash;
+
+$resources-folder: 'https://s3.eu-central-1.amazonaws.com/arzamas-static/x/338-new-year-jhtUdfkkqdp4is/1241';
+
+body {
+  margin: 0;
+}
+
+.xx-field {
+  * {
+    box-sizing: border-box;
+  }
+
+  a:hover {
+    border-bottom: none;
+  }
+}
+
+.xx-rules {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: index($elements, rules);
+
+  width: 600px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  color: $white-color;
+
+  transition: .2s opacity;
+}
+
+.xx-header {
+  margin-bottom: 45px;
+
+  &__chapter {
+    padding-bottom: 0;
+  }
+
+  &__title {
+    font: bold 24px $sans;
+    text-align: center;
+  }
+}
+
+.xx-field {
+  width: 100vw;
+  height: 100vh;
+  min-width: 800px;
+  min-height: 800px;
+  background-color: $white-color;
+
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 55vh;
+    background-color: $background-color;
+
+    z-index: 1;
+  }
+}
+
+.xx-stars {
+  position: absolute;
+  z-index: index($elements, stars);
+  width: 100%;
+  height: 100%;
+
+  background-image: url('#{$resources-folder}/images/stars.png');
+  background-size: contain;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.xx-forest {
+  position: absolute;
+  z-index: index($elements, forest);
+  width: 100%;
+  height: 100%;
+
+  background-image: url('#{$resources-folder}/images/forest.png');
+  background-size: 120%;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.xx-snow {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  z-index: index($elements, snow);
+}
+
+.xx-overlay {
+  position: absolute;
+  left: 0; top: 0;
+  right: 0; bottom: 0;
+  z-index: index($elements, overlay);
+
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.xx-moon {
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  z-index: index($elements, moon);
+
+  width: 50px;
+  height: 50px;
+
+  background-color: white;
+  border-radius: 100%;
+  box-shadow: 0 0 3px 5px;
+}
+
+.xx-walker {
+  position: absolute;
+  top: 50vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: index($elements, walker);
+
+  opacity: 0;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  transition: 1s opacity;
+
+  &--visible {
+    opacity: 1;
+  }
+
+  &--stage-1 {
+    height: 43px;
+    width: 16px;
+
+    background-image: url('#{$resources-folder}/images/walker-1.png');
+  }
+
+  &--stage-2 {
+    height: 105px;
+    width: 40px;
+
+    background-image: url('#{$resources-folder}/images/walker-2.png');
+  }
+
+  &--stage-3 {
+    height: 188px;
+    width: 71px;
+
+    background-image: url('#{$resources-folder}/images/walker-3.png');
+  }
+
+  &--stage-4 {
+    height: 447px;
+    width: 168px;
+
+    background-image: url('#{$resources-folder}/images/walker-4.png');
+  }
+}
+
+.xx-face {
+  position: absolute;
+  max-height: 746px;
+  max-width: 800px;
+  height: 75%;
+  width: 50%;
+  bottom: 0;
+  left: 100px;
+  z-index: index($elements, face);
+
+  background-image: url('#{$resources-folder}/images/walkers/tolstoi.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+
+  &--animated {
+    transition: 1s opacity;
+  }
+
+  &--position-1 {
+    transform: translateX(100vw);
+  }
+}
+
+.xx-gallery {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 0; top: 0;
+  transform: translateX(0);
+  z-index: index($elements, gallery);
+
+  display: flex;
+  align-items: center;
+
+  transition: .5s transform ease-in-out;
+  background-color: rgba(26, 26, 26, 0.85);
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    max-width: 1300px;
+    margin-bottom: -45px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 12px 45px;
+
+    width: 130px;
+    height: 145px;
+
+    border: solid $white-color 4px;
+    border-radius: 100%;
+  }
+
+  &__walker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 103px;
+    height: 115px;
+
+    border: solid $white-color 2px;
+    border-radius: 100%;
+
+    &::after {
+      content: '?';
+      color: white;
+      font-size: 60px;
+      font-family: $serif;
+      font-weight: 800;
+    }
+  }
+
+  &--hidden {
+    transform: translateX(150%);
+  }
+}
+
+.xx-buttons {
+  position: absolute;
+  right: 25px;
+  top: 50px;
+  z-index: index($elements, buttons);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+
+  transition: .2s opacity;
+
+  &__item {
+    margin: 5px;
+  }
+}
+
+.xx-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: absolute;
+  right: 100px;
+  top: 50%;
+  z-index: index($elements, photo);
+
+  transform: translateY(-50%);
+
+  &--animated {
+    transition: .2s opacity;
+  }
+
+  &__title {
+    color: $white-color;
+    font-size: 25px;
+    font-family: $serif;
+    text-align: center;
+
+    max-width: 500px;
+
+    &--strong {
+      display: inline-block;
+
+      margin-top: 10px;
+      font-size: 72px;
+    }
+  }
+}
+
+.xx-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  width: 200px; height: 200px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: index($elements, share);
+
+  background-color: $white-color;
+
+  transition: .2s opacity;
+
+  &--gallery {
+    z-index: index($elements, gallery-share);
+  }
+}
+
+.xx-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.xx-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.xx-btn-icon {
+  height: 60px;
+  width: 60px;
+
+  border-radius: 100%;
+  border: 3px solid #545454;
+  cursor: pointer;
+}
+
+.xx-flash {
+  position: fixed;
+  left: 0; top: 0;
+  right: 0; bottom: 0;
+  z-index: index($elements, flash);
+  pointer-events: none;
+  background-color: $white-color;
+
+  transition: .1s opacity;
+
+  &--fade-out {
+    transition: .5s opacity;
+  }
+}

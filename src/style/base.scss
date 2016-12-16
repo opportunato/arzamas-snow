@@ -1,0 +1,278 @@
+$serif: 'Lava Pro', 'Lava 3', serif;
+$sans: 'Formular', sans-serif;
+$black: #1a1a1a;
+$grey: #bebebe;
+
+$imgPath : "/";
+// #{$imgPath}
+
+
+@mixin iphone {
+  @media only screen and (max-width: 667px) {
+    @content;
+  }
+}
+
+
+@mixin animated($time) {
+  -webkit-transition: all $time ease;
+  -moz-transition: all $time ease;
+  -ms-transition: all $time ease;
+  -o-transition: all $time ease;
+  transition: all $time ease;
+}
+
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+@mixin box() {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@mixin toCenter($position:absolute) {
+  position: $position;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin blurFix() {
+  transform: translateZ(0px);
+}
+
+
+@mixin rounded($val) {
+  -webkit-border-radius: $val;
+  border-radius: $val;
+}
+
+@mixin rotate($val) {
+  -moz-transform: rotate($val);
+  -webkit-transform: rotate($val);
+  -o-transform: rotate($val);
+  -ms-transform: rotate($val);
+  transform: rotate($val);
+}
+
+@mixin size($width,$height:$width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;
+  -moz-box-ordinal-group: $val;
+  -ms-flex-order: $val;
+  -webkit-order: $val;
+  order: $val;
+}
+
+@mixin round($val) {
+  -webkit-border-radius: $val;
+  border-radius: $val;
+}
+
+@mixin clr() {
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin noselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// контент по центру
+// @include flexbox;
+// justify-content: center;
+// align-items: center;
+
+
+.hidden {
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+// my style
+.xx-article {
+  min-height: 100%;
+  padding-bottom: 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.xx-chapter {
+  display: block;
+  padding: 40px 0 9px;
+
+  color: #bfbfbf;
+  font: bold 11px/1 $sans;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.xx-title {
+  margin: 20px 0 40px;
+
+  font: bold 50px $sans;
+  text-align: center;
+}
+
+.xx-lead {
+  width: 640px;
+  margin: 0 auto 30px;
+
+  font: 25px/35px $serif;
+  text-align: center;
+}
+
+.xx-share {
+  text-align: center;
+  z-index: 2;
+  &__title {
+    font: 13px/20px $sans;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  &__list {
+    border: none;
+    display: inline-block;
+    margin-bottom: 0;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+
+    .social {
+      float: left;
+      margin: 0;
+      &:last-child a {
+        border-right: none;
+      }
+      a {
+        border-bottom: 0;
+        border-right: 1px solid #bebebe;
+        color: #222222;
+        display: block;
+        font: 13px/1 $sans;
+        padding-top: 30px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        width: 50px;
+        &:before {
+          background-image: url('//cdn-s-assets.arzamas.academy/assets/svg/i-social-dark.svg');
+          background-repeat: no-repeat;
+          content: "";
+          height: 18px;
+          left: 50%;
+          margin: -10px 0 0 -9px;
+          position: absolute;
+          top: 50%;
+          width: 18px;
+        }
+        &:hover:before {
+          background-image: none,url('//cdn-s-assets.arzamas.academy/assets/svg/i-social-hover.svg');
+        }
+      }
+      &.social-fb a:before {
+        background-position: 0 0;
+      }
+      &.social-vk a:before {
+        background-position: 0 -18px;
+      }
+      &.social-tw a:before {
+        background-position: 0 -36px;
+      }
+      &.social-od a:before {
+        background-position: 0 -54px;
+      }
+    }
+  }
+}
+
+
+
+// ******BTNS******
+
+.xx-btn {
+  font: bold 15px/39px $sans;
+  padding: 0 50px;
+  height: 45px;
+  text-align: center;
+  border: 3px solid #fff;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &--small {
+    font-size: 13px;
+    line-height: 40px;
+    height: 42px;
+    padding: 0 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #fff;
+    display: inline-block;
+  }
+
+  &--inverted {
+    border: 3px solid $black;
+
+    background-color: rgba(255, 255, 255, 0);
+    color: $black;
+  }
+
+  &--big {
+    height: 51px;
+    line-height: 45px;
+  }
+}
+
+.xx-btn-unstyled {
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  outline: 0;
+  vertical-align: baseline;
+}
