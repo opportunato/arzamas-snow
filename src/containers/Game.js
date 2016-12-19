@@ -17,8 +17,8 @@ const FACE_STAY_TIME = 10;
 
 const getInitialState = () => ({
   stageNumber: 0,
-  showPhoto: true,
-  showGallery: false,
+  showPhoto: false,
+  showGallery: true,
   shareData: null,
   facePosition: 0,
   galleryShareData: null,
@@ -39,7 +39,8 @@ class Game extends React.Component {
 
   state = {
     ...getInitialState(),
-    showRules: false
+    showRules: false,
+    metWalkers: {}
   };
 
   timers = resetTimers();
@@ -80,7 +81,11 @@ class Game extends React.Component {
 
   takePhoto = () => {
     this.setState({
-      showFlash: true
+      showFlash: true,
+      metWalkers: {
+        ...this.state.metWalkers,
+        [this.walker.id]: true
+      }
     });
     setTimeout(() => {
       this.setState({
@@ -194,10 +199,11 @@ class Game extends React.Component {
         <Gallery
           visible = {showGallery}
           share = {this.shareGallery}
+          metWalkers = {{lev: true, faina: true, bill: true, kalina: true}}
         />
         <Share
           visible = {galleryShareData !== null}
-          className = "xx-share--gallery"
+          className = "xx-share-window--gallery"
           {...galleryShareData}
         />
         <Rules

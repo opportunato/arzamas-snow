@@ -1,16 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
 import getVisibilityClasses from '../utils/getVisibilityClasses';
+import ShareButtons from './ShareButtons';
 
 const Share = ({ action, actionText, visible, className }) => (
   <div
     className={classNames({
-      'xx-share': true,
+      'xx-share-window': true,
       [getVisibilityClasses(visible)]: true,
       [className]: true
     })}
   >
-    <button className="xx-btn xx-btn--big" onClick={action}>
+    <div className="xx-share-window__title">Это успех!</div>
+    <div className="xx-share-window__image" />
+    <ShareButtons
+      className="xx-share-window__buttons"
+    />
+    <button className="xx-btn xx-btn--big xx-btn--inverted" onClick={action}>
       {actionText}
     </button>
   </div>

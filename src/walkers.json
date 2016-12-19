@@ -1,58 +1,54 @@
 [
   {
     "name": "Лев Толстой",
-    "img": "lev"
+    "id": "lev"
   },
   {
     "name": "Бетховен",
-    "img": "lev"
+    "id": "bet"
   },
   {
     "name": "Годзилла",
-    "img": "lev"
+    "id": "god"
   },
   {
     "name": "Федор Борисович Успенский",
-    "img": "lev"
+    "id": "usp"
   },
   {
     "name": "Нефертити",
-    "img": "lev"
+    "id": "nef"
   },
   {
     "name": "Бодлер",
-    "img": "lev"
+    "id": "bod"
   },
   {
     "name": "Будда",
-    "img": "lev"
+    "id": "budda"
   },
   {
     "name": "Фаина Раневская",
-    "img": "lev"
+    "id": "faina"
   },
   {
     "name": "Девочка с персиками",
-    "img": "lev"
+    "id": "girl"
   },
   {
     "name": "Ван Гог",
-    "img": "lev"
+    "id": "van"
   },
   {
     "name": "Андрей Тарковский",
-    "img": "lev"
+    "id": "tark"
   },
   {
     "name": "Пьер Луиджи Калина",
-    "img": "lev"
+    "id": "kalina"
   },
   {
     "name": "Билл Мюррей",
-    "img": "lev"
-  },
-  {
-    "name": "Дубровский",
-    "img": "lev"
+    "id": "bill"
   }
 ]
