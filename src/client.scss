@@ -7,6 +7,8 @@ $grey-color: #f0f0f0;
 $separator-color: #bebebe;
 $select-color: #ffd700;
 
+$forest-width: 3000;
+
 $elements: stars, forest, overlay, snow, moon, rules, walker, face, photo, share, gallery, gallery-share, buttons, flash;
 
 $resources-folder: 'https://s3.eu-central-1.amazonaws.com/arzamas-static/x/338-new-year-jhtUdfkkqdp4is/1241';
@@ -26,6 +28,40 @@ body {
     border-bottom: none;
   }
 }
+
+.xx-placeholder {
+  position: absolute;
+  height: 60px;
+  width: 100%;
+  will-change: top;
+  background: rgba(0,0,0,0);
+  border-bottom: 1px solid #e9e9e9;
+  z-index: 10000;
+}
+
+.xx-fancy-separator {
+  display: flex;
+  align-items: center;
+
+  color: $white-color;
+
+  &__left {
+    margin-right: 15px;
+  }
+
+  &__left-center {
+    margin-right: 20px;
+  }
+
+  &__right-center {
+    margin-left: 20px;
+  }
+
+  &__right {
+    margin-left: 15px;
+  }
+}
+
 
 .xx-rules {
   position: absolute;
@@ -58,11 +94,59 @@ body {
   }
 }
 
+.xx-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: auto;
+
+  &--share {
+    z-index: index($elements, share);
+  }
+
+  &--gallery-share {
+    z-index: index($elements, gallery-share);
+  }
+
+  &--gallery {
+    z-index: index($elements, gallery);
+    transition: .5s transform ease-in-out;
+  }
+
+  &--hidden {
+    transform: translateX(150%);
+  }
+
+  &--gallery &__overlay {
+    padding: 0;
+  }
+
+  &__overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 80px 70px 20px;
+    min-height: 100%;
+    width: 100%;
+  }
+
+  &__body {
+    position: relative;
+    cursor: default;
+
+    margin: 0 auto;
+  }
+}
+
 .xx-field {
   width: 100vw;
   height: 100vh;
-  min-width: 800px;
-  min-height: 800px;
   background-color: $white-color;
 
   position: relative;
@@ -76,10 +160,14 @@ body {
     left: 0;
 
     width: 100vw;
-    height: 55vh;
+    height: 60vh;
     background-color: $background-color;
 
     z-index: 1;
+
+    @media (max-width: 800px) {
+      height: 55vh;
+    }
   }
 }
 
@@ -129,12 +217,12 @@ body {
   top: 100px;
   z-index: index($elements, moon);
 
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 
   background-color: white;
   border-radius: 100%;
-  box-shadow: 0 0 3px 5px;
+  box-shadow: 0 0 30px 7px rgba(255, 255, 255, 0.9);
 }
 
 .xx-walker {
@@ -165,6 +253,7 @@ body {
   &--stage-2 {
     height: 105px;
     width: 40px;
+    left: 45%;
 
     background-image: url('#{$resources-folder}/images/walker-2.png');
   }
@@ -172,6 +261,7 @@ body {
   &--stage-3 {
     height: 188px;
     width: 71px;
+    left: 40%;
 
     background-image: url('#{$resources-folder}/images/walker-3.png');
   }
@@ -179,6 +269,7 @@ body {
   &--stage-4 {
     height: 447px;
     width: 168px;
+    left: 35%;
 
     background-image: url('#{$resources-folder}/images/walker-4.png');
   }
@@ -186,50 +277,87 @@ body {
 
 .xx-face {
   position: absolute;
-  max-height: 746px;
-  max-width: 800px;
-  height: 75%;
-  width: 50%;
+  height: 90vh;
+  width: 50vw;
   bottom: 0;
-  left: 100px;
+  left: 0;
   z-index: index($elements, face);
 
-  background-image: url('#{$resources-folder}/images/walkers/tolstoi.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom;
+  > img {
+    position: absolute;
+    left: 50%; bottom: 0;
+    transform: translateX(-50%);
+    height: 100%;
+  }
 
   &--animated {
-    transition: 1s opacity;
+    transition: 1s opacity, 3s transform;
   }
 
   &--position-1 {
-    transform: translateX(100vw);
+    animation: 3s ease-in-out forwards face-walk-1;
+  }
+
+  &--position-2 {
+    animation: 3s ease-in-out forwards face-walk-2;
+  }
+
+  &--position-3 {
+    animation: 3s ease-in-out forwards face-walk-3;
+  }
+
+  &--position-4 {
+    animation: 3s ease-in-out forwards face-walk-4;
   }
 }
 
+@keyframes face-walk-1 {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-8vw, 2vh); }
+  100% { transform: translate(-15vw, 0); }
+}
+
+@keyframes face-walk-2 {
+  0% { transform: translate(-15vw, 0); }
+  50% { transform: translate(-23vw, 2vh); }
+  100% { transform: translate(-30vw, 0); }
+}
+
+@keyframes face-walk-3 {
+  0% { transform: translate(-30vw, 0); }
+  50% { transform: translate(-38vw, 2vh); }
+  100% { transform: translate(-45vw, 0); }
+}
+
+@keyframes face-walk-4 {
+  0% { transform: translate(-45vw, 0); }
+  50% { transform: translate(-53vw, 2vh); }
+  100% { transform: translate(-60vw, 0); }
+}
+
 .xx-gallery {
-  position: fixed;
-  left: 0; right: 0;
-  bottom: 0; top: 0;
-  transform: translateX(0);
-  z-index: index($elements, gallery);
+  min-height: 100%;
+  width: 100%;
+  padding: 97px 0 20px;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  transition: .5s transform ease-in-out;
   background-color: rgba(26, 26, 26, 0.85);
 
-  &__count {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+  &--golden &__count {
+    color: gold;
 
-    padding: 40px;
+    border-color: gold;
+  }
+
+  &__count {
+    flex-shrink: 0;
+    padding: 0 40px 40px;
     border-bottom: 2px $white-color solid;
+    margin-bottom: 50px;
 
     color: $white-color;
     font-family: $serif;
@@ -237,11 +365,13 @@ body {
   }
 
   &__container {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
 
+    padding: 0;
     max-width: 1200px;
     margin-bottom: -35px;
   }
@@ -254,8 +384,18 @@ body {
     margin: 0 12px 35px;
   }
 
-  &--hidden {
-    transform: translateX(150%);
+  &__golden-share {
+    flex-shrink: 0;
+  }
+
+  &__clear {
+    flex-shrink: 0;
+    margin: 30px 0 30px;
+
+    color: $white-color;
+    font-family: $sans;
+    font-size: 12px;
+    text-decoration: underline;
   }
 }
 
@@ -335,12 +475,20 @@ body {
     font-size: 13px;
     font-weight: bold;
   }
+
+  &--golden &__frame {
+    border-color: gold;
+  }
+
+  &--golden &__check {
+    background-color: gold;
+  }
 }
 
 .xx-buttons {
   position: absolute;
   right: 25px;
-  top: 50px;
+  top: 85px;
   z-index: index($elements, buttons);
   margin: 0;
   padding: 0;
@@ -358,17 +506,25 @@ body {
 .xx-photo {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 
   position: absolute;
-  right: 100px;
-  top: 50%;
+  width: 50vw;
+  height: 100%; right: 0;
   z-index: index($elements, photo);
-
-  transform: translateY(-50%);
 
   &--animated {
     transition: .2s opacity;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    position: relative;
+    right: 30px;
   }
 
   &__title {
@@ -377,14 +533,24 @@ body {
     font-family: $serif;
     text-align: center;
 
-    max-width: 500px;
-
     &--strong {
       display: inline-block;
 
       margin-top: 10px;
-      font-size: 72px;
+      font-size: 60px;
+      line-height: 60px;
     }
+  }
+
+  &__separator {
+    margin-top: 20px;
+    margin-bottom: 35px;
+  }
+
+  &__button {
+    font: bold 17px/30px $sans;
+    padding: 0 30px;
+    height: 60px;
   }
 }
 
@@ -393,9 +559,6 @@ body {
   flex-direction: column;
   align-items: center;
 
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
   z-index: index($elements, share);
 
   padding: 40px;
@@ -405,14 +568,11 @@ body {
 
   transition: .2s opacity;
 
-  &__title {
+  &__title-wrapper {
     position: relative;
+    color: #e5e5e5;
 
-    font-family: $serif;
-    font-size: 30px;
-    font-weight: 800;
-
-    padding-bottom: 25px;
+    padding-bottom: 15px;
     margin-bottom: 25px;
 
     &::after {
@@ -430,6 +590,12 @@ body {
     }
   }
 
+  &__title {
+    font-family: $serif;
+    font-size: 30px;
+    font-weight: 800;
+  }
+
   &__image {
     width: 590px;
     height: 310px;
@@ -441,8 +607,8 @@ body {
     margin: 25px 0;
   }
 
-  &--gallery {
-    z-index: index($elements, gallery-share);
+  &__button-wrapper {
+    color: #e5e5e5;
   }
 }
 

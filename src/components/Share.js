@@ -2,23 +2,42 @@ import React from 'react';
 import classNames from 'classnames';
 import getVisibilityClasses from '../utils/getVisibilityClasses';
 import ShareButtons from './ShareButtons';
+import FancySeparator from './FancySeparator';
 
-const Share = ({ action, actionText, visible, className }) => (
+const Share = ({ title, action, actionText, visible, className }) => (
   <div
     className={classNames({
-      'xx-share-window': true,
+      'xx-modal': true,
       [getVisibilityClasses(visible)]: true,
       [className]: true
     })}
   >
-    <div className="xx-share-window__title">Это успех!</div>
-    <div className="xx-share-window__image" />
-    <ShareButtons
-      className="xx-share-window__buttons"
-    />
-    <button className="xx-btn xx-btn--big xx-btn--inverted" onClick={action}>
-      {actionText}
-    </button>
+    <div className="xx-modal__overlay">
+      <div className="xx-modal__body xx-share-window">
+        {
+          title &&
+          <FancySeparator className="xx-share-window__title-wrapper">
+            <div className="xx-share-window__title">
+              {title}
+            </div>
+          </FancySeparator>
+        }
+        <div className="xx-share-window__image" />
+        <ShareButtons
+          className="xx-share-window__buttons"
+        />
+        <FancySeparator
+          className="xx-share-window__button-wrapper"
+        >
+          <button
+            className="xx-btn xx-btn--big xx-btn--inverted xx-share-window__button"
+            onClick={action}
+          >
+            {actionText}
+          </button>
+        </FancySeparator>
+      </div>
+    </div>
   </div>
 );
 

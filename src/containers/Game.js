@@ -8,17 +8,25 @@ import SoundIcon from '../components/SoundIcon';
 import Gallery from '../components/Gallery';
 import Snow from '../components/Snow';
 import Share from '../components/Share';
+import FancySeparator from '../components/FancySeparator';
 import walkers from '../walkers.json';
 import getVisibilityClasses from "../utils/getVisibilityClasses";
 
 const MAX_TIMER_LENGTH = 3;
 const STAGES_NUMBER = 5;
 const FACE_STAY_TIME = 10;
+const FACE_POSITIONS = 4;
+
+const WALKERS = 'WALKERS';
 
 const getInitialState = () => ({
   stageNumber: 0,
+  walkerLefts: range(STAGES_NUMBER).reduce((memo, stage) => {
+    memo[stage + 1] = getWalkerLeft(stage + 1);
+    return memo;
+  }, {}),
   showPhoto: false,
-  showGallery: true,
+  showGallery: false,
   shareData: null,
   facePosition: 0,
   galleryShareData: null,
@@ -35,24 +43,48 @@ const resetTimers = () => range(STAGES_NUMBER).map(() =>
 const resetWalker = () =>
   walkers[Math.floor(Math.random() * walkers.length)];
 
+const walkerLefts = {
+  1: [49, 54],
+  2: [43, 49],
+  3: [38, 43],
+  4: [30, 38]
+};
+
+const getWalkerLeft = (stage) => {
+  const lefts = walkerLefts[stage];
+  if (!lefts) return null;
+  const interval = lefts[1] - lefts[0];
+  const min = lefts[0];
+  return min + Math.floor(Math.random() * interval);
+};
+
+export const isGolden = (metWalkers) => {
+  return Object.keys(metWalkers).length === walkers.length;
+};
+
 class Game extends React.Component {
 
   state = {
     ...getInitialState(),
     showRules: false,
-    metWalkers: {}
+    metWalkers: localStorage.getItem(WALKERS) ? JSON.parse(localStorage.getItem(WALKERS)) : {}
   };
 
   timers = resetTimers();
   walker = resetWalker();
+
+  componentDidMount() {
+    // this.setWalkTimer();
+  }
 
   setWalkTimer = () => {
     const timer = this.timers[0];
     this.timers = this.timers.slice(1);
     setTimeout(() => {
       const {stageNumber} = this.state;
+      const newStageNumber = stageNumber + 1;
       this.setState({
-        stageNumber: stageNumber + 1,
+        stageNumber: newStageNumber,
         showPhoto: this.timers.length === 0
       });
       if (this.timers.length > 0) {
@@ -64,39 +96,60 @@ class Game extends React.Component {
   };
 
   setFaceTimer = () => {
-    setTimeout(() => {
-      this.setState({
-        facePosition: 1,
-        fail: true,
-        showPhoto: false,
-        shareData: {
-          walker: this.walker,
-          time: 10,
-          action: this.restart,
-          actionText: 'Собери их все'
-        }
-      })
+    this.faceTimer = setTimeout(() => {
+      this.timeFace();
     }, FACE_STAY_TIME * 1000);
   };
 
-  takePhoto = () => {
+  timeFace = () => {
+    if (this.state.facePosition === FACE_POSITIONS) {
+      this.fail();
+      return;
+    } else {
+      this.setState({facePosition: this.state.facePosition + 1});
+    }
+    this.faceTimer = setTimeout(() => {
+      this.timeFace();
+    }, 4000);
+  };
+
+  fail = () => {
     this.setState({
-      showFlash: true,
-      metWalkers: {
-        ...this.state.metWalkers,
-        [this.walker.id]: true
+      fail: true,
+      showPhoto: false,
+      shareData: {
+        title: "Это провал",
+        walker: this.walker,
+        time: 10,
+        action: this.restart,
+        actionText: 'Попробуй еще раз'
       }
     });
+  };
+
+  takePhoto = () => {
+    clearTimeout(this.faceTimer);
+    const metWalkers = {
+      ...this.state.metWalkers,
+      [this.walker.id]: true
+    };
+    const isSuper = isGolden(metWalkers) && !isGolden(this.state.metWalkers);
+    this.setState({
+      showFlash: true,
+      metWalkers
+    });
+    this.saveWalkers(metWalkers);
     setTimeout(() => {
       this.setState({
         showFlash: false,
         success: true,
         showPhoto: false,
         shareData: {
+          title: isSuper ? "Это фантастический успех" : "Это успех",
           walker: this.walker,
           time: 10,
           action: this.restart,
-          actionText: 'Собери их все'
+          actionText: isSuper ? "Ты их всех собрал" : "Собери их всех",
         }
       })
     }, 100);
@@ -115,7 +168,7 @@ class Game extends React.Component {
 
   startGame = () => {
     this.setState({ showRules: false });
-    // this.setWalkTimer();
+    this.setWalkTimer();
   };
 
   restart = () => {
@@ -133,6 +186,10 @@ class Game extends React.Component {
     });
   };
 
+  saveWalkers = (metWalkers) => {
+    localStorage.setItem(WALKERS, JSON.stringify(metWalkers));
+  };
+
   render() {
     const {
       stageNumber,
@@ -143,7 +200,9 @@ class Game extends React.Component {
       shareData,
       galleryShareData,
       showFlash,
-      success
+      success,
+      metWalkers,
+      walkerLefts
     } = this.state;
 
     return (
@@ -153,6 +212,7 @@ class Game extends React.Component {
           'xx-field-photo': true
         })}
       >
+        <div className="xx-placeholder" />
         <div className="xx-stars" />
         <div className="xx-forest" />
         <div className="xx-overlay" />
@@ -193,17 +253,18 @@ class Game extends React.Component {
           </li>
         </ul>
         <Share
+          className = "xx-modal--share"
           visible = {shareData !== null}
           {...shareData}
         />
         <Gallery
           visible = {showGallery}
           share = {this.shareGallery}
-          metWalkers = {{lev: true, faina: true, bill: true, kalina: true}}
+          metWalkers = {metWalkers}
         />
         <Share
           visible = {galleryShareData !== null}
-          className = "xx-share-window--gallery"
+          className = "xx-modal--gallery-share"
           {...galleryShareData}
         />
         <Rules
@@ -221,6 +282,9 @@ class Game extends React.Component {
                   [getVisibilityClasses(stageNumber === number)]: true
                 })
               }
+              style={{
+                left: walkerLefts[number] + '%'
+              }}
             />
           )
         }
@@ -234,7 +298,9 @@ class Game extends React.Component {
                 [getVisibilityClasses(showPhoto)]: true
               })
             }
-          />
+          >
+            <img src="https://s3.eu-central-1.amazonaws.com/arzamas-static/x/338-new-year-jhtUdfkkqdp4is/1241/images/walkers/tolstoi.png" />
+          </div>
         }
         {
           <div
@@ -244,19 +310,22 @@ class Game extends React.Component {
               [getVisibilityClasses(showPhoto)]: true
             })}
           >
-            <h2 className="xx-photo__title">
-              Привет!<br/>
-              Вот мы и встретились, я —<br/>
-              <strong className="xx-photo__title--strong">
-                {this.walker.name}
-              </strong>
-            </h2>
-            <button
-              className="xx-btn"
-              onClick={this.takePhoto}
-            >
-              Быстро, делаем фотулю!
-            </button>
+            <div className="xx-photo__wrapper">
+              <h2 className="xx-photo__title">
+                Привет!<br/>
+                Вот мы и встретились, я —<br/>
+                <strong className="xx-photo__title--strong">
+                  {this.walker.name}
+                </strong>
+              </h2>
+              <FancySeparator className="xx-photo__separator" />
+              <button
+                className="xx-btn xx-photo__button"
+                onClick={this.takePhoto}
+              >
+                Быстро, делаем фотулю!
+              </button>
+            </div>
           </div>
         }
       </div>
