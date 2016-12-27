@@ -124,6 +124,30 @@ a {
   text-decoration: none;
 }
 
+.header-blog, .footer-page, .nav-bottom-articles, .article-header.post-header, .article-preview {
+  display: none;
+}
+
+.article > h1 {
+  display: none;
+}
+
+header.header-page.header-page-shown.header-page-dark {
+  position: absolute !important;
+}
+
+section.section-container {
+  padding-top: 0 !important;
+  height: 100%;
+}
+
+.article-course-share {
+  z-index: 10000;
+
+  .share-button {
+    border-color: $white-color;
+  }
+}
 
 // my style
 .xx-article {
@@ -151,7 +175,7 @@ a {
 
 .xx-lead {
   width: 640px;
-  margin: 0 auto 30px;
+  margin: 0 auto 29px;
 
   font: 25px/35px $serif;
   text-align: center;
@@ -225,16 +249,19 @@ a {
 
 
 // ******BTNS******
+$hover-transition-duration: 0.15s;
 
 .xx-btn {
   font: bold 15px/39px $sans;
   padding: 0 50px;
+  min-width: 180px;
   height: 45px;
   text-align: center;
   border: 3px solid #fff;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.3);
   color: white;
+  transition: opacity $hover-transition-duration ease-in-out;
 
   &:hover {
     opacity: 0.6;
@@ -260,6 +287,25 @@ a {
   &--big {
     height: 51px;
     line-height: 45px;
+  }
+
+  &--progress {
+    &:hover {
+      opacity: 1;
+    }
+
+    position: relative;
+    background-color: rgba(0, 0, 0, 0);
+
+    &__indicator {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 0; top: 0;
+
+
+      transition: width .5s ease-in-out;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
   }
 }
 

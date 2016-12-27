@@ -1,54 +1,54 @@
 [
   {
     "name": "Лев Толстой",
-    "id": "tolstoi"
+    "id": "tolstoy"
   },
   {
     "name": "Людвиг ван Бетховен",
-    "id": "bet"
+    "id": "beethoven"
   },
   {
     "name": "Годзилла",
-    "id": "god"
+    "id": "godzilla"
   },
   {
     "name": "Федор Успенский",
-    "id": "usp"
+    "id": "uspensky"
   },
   {
     "name": "Нефертити",
-    "id": "nef"
+    "id": "nefertiti"
   },
   {
     "name": "Шарль Бодлер",
-    "id": "bod"
+    "id": "baudelaire"
   },
   {
     "name": "Будда",
-    "id": "budda"
+    "id": "buddha"
   },
   {
     "name": "Фаина Раневская",
-    "id": "faina"
+    "id": "ranevskaya"
   },
   {
     "name": "Девочка с персиками",
-    "id": "girl"
+    "id": "peaches"
   },
   {
     "name": "Винсент Ван Гог",
-    "id": "van"
+    "id": "vangogh"
   },
   {
     "name": "Андрей Тарковский",
-    "id": "tark"
+    "id": "tarkovskiy"
   },
   {
     "name": "Билл Мюррей",
-    "id": "bill"
+    "id": "murray"
   },
   {
-    "name": "Борис Гребенщиков",
+    "name": "Красавец Дубровский",
     "id": "bg"
   }
 ]

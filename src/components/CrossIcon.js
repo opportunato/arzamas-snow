@@ -8,7 +8,7 @@ const CrossIcon = () => (
     height="18"
     viewBox="0 0 18 18"
   >
-    <path fill="#fff" fillRule="evenodd" d="M3566.01,128l-2.01,2-7-7-7,7-2.01-2,7.01-7-7.01-7,2.01-2,7,7,7-7,2.01,2-7.01,7Z" transform="translate(-3548 -112)"/>
+    <path fill="currentColor" fillRule="evenodd" d="M3566.01,128l-2.01,2-7-7-7,7-2.01-2,7.01-7-7.01-7,2.01-2,7,7,7-7,2.01,2-7.01,7Z" transform="translate(-3548 -112)"/>
   </svg>
 );
 

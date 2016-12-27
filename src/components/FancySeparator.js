@@ -17,15 +17,15 @@ const FancySeparator = ({className="", children}) => (
     {
       children
         ?
-          [
+          <div style={{display: 'flex', alignItems: 'center'}}>
             <div className="xx-fancy-separator__left-center">
               <RhombusIcon />
-            </div>,
-            children,
+            </div>
+            {children}
             <div className="xx-fancy-separator__right-center">
               <RhombusIcon />
             </div>
-          ]
+          </div>
         : (
           <div>
             <RhombusIcon />

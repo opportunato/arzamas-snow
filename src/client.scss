@@ -6,12 +6,53 @@ $background-color: #2d2d2d;
 $grey-color: #f0f0f0;
 $separator-color: #bebebe;
 $select-color: #ffd700;
+$gold-color: #ffd400;
 
 $forest-width: 3000;
 
-$elements: stars, forest, overlay, snow, moon, rules, walker, face, photo, share, gallery, gallery-share, buttons, flash;
+$elements: stars, forest, overlay, walker, fireworks, snow, moon, rules, face, photo, share, gallery, gallery-share, buttons, flash;
 
-$resources-folder: 'https://s3.eu-central-1.amazonaws.com/arzamas-static/x/338-new-year-jhtUdfkkqdp4is/1241';
+$resources-folder: 'https://cdn-s-static.arzamas.academy/x/338-new-year-jhtUdfkkqdp4is/1241';
+
+$gold-gradient: linear-gradient(45deg, #fb0 0%, #ff0 25%, #fb0 50%, #ff0 75%, #fb0 100%);
+$hover-transition-duration: 0.15s;
+
+@mixin gradient-text($gradient, $bg : 'light') {
+  @supports(mix-blend-mode: lighten) {
+    display: inline-block;
+    position: relative;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+
+      background-image: unquote($gradient);
+      background-size: 1200%;
+      pointer-events: none;
+      animation: super-gradient 2s ease infinite;
+    }
+
+    @if ($bg == 'light') {
+      color: #000;
+      background: #fff;
+      mix-blend-mode: multiply;
+
+      &::before {
+        mix-blend-mode: screen;
+      }
+    } @else {
+      color: #fff;
+      background: #000;
+      mix-blend-mode: lighten;
+
+      &::before {
+        mix-blend-mode: multiply;
+      }
+    }
+  }
+}
 
 body {
   margin: 0;
@@ -27,16 +68,6 @@ body {
   a:hover {
     border-bottom: none;
   }
-}
-
-.xx-placeholder {
-  position: absolute;
-  height: 60px;
-  width: 100%;
-  will-change: top;
-  background: rgba(0,0,0,0);
-  border-bottom: 1px solid #e9e9e9;
-  z-index: 10000;
 }
 
 .xx-fancy-separator {
@@ -110,11 +141,17 @@ body {
 
   &--gallery-share {
     z-index: index($elements, gallery-share);
+    transition: .2s opacity ease-in-out, .2s transform ease-in-out;
+    transform: translateY(10px);
+
+    &.xx-visible {
+      transform: translateY(0);
+    }
   }
 
   &--gallery {
     z-index: index($elements, gallery);
-    transition: .5s transform ease-in-out;
+    transition: .4s transform ease-in-out;
   }
 
   &--hidden {
@@ -202,6 +239,13 @@ body {
   z-index: index($elements, snow);
 }
 
+.xx-fireworks {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  z-index: index($elements, fireworks);
+}
+
 .xx-overlay {
   position: absolute;
   left: 0; top: 0;
@@ -222,19 +266,17 @@ body {
 
   background-color: white;
   border-radius: 100%;
-  box-shadow: 0 0 30px 7px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 40px 0 rgba(255, 255, 255, 0.9);
 }
 
 .xx-walker {
   position: absolute;
-  top: 50vh;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: index($elements, walker);
 
+  left: 50%;
   opacity: 0;
 
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 
   transition: 1s opacity;
@@ -243,35 +285,24 @@ body {
     opacity: 1;
   }
 
-  &--stage-1 {
-    height: 43px;
-    width: 16px;
-
+  &--animation-0 {
     background-image: url('#{$resources-folder}/images/walker-1.png');
   }
 
-  &--stage-2 {
-    height: 105px;
-    width: 40px;
-    left: 45%;
-
+  &--animation-1 {
     background-image: url('#{$resources-folder}/images/walker-2.png');
   }
 
-  &--stage-3 {
-    height: 188px;
-    width: 71px;
-    left: 40%;
-
+  &--animation-2 {
     background-image: url('#{$resources-folder}/images/walker-3.png');
   }
 
-  &--stage-4 {
-    height: 447px;
-    width: 168px;
-    left: 35%;
-
+  &--animation-3 {
     background-image: url('#{$resources-folder}/images/walker-4.png');
+  }
+
+  &--animation-4 {
+    background-image: url('#{$resources-folder}/images/walker-5.png');
   }
 }
 
@@ -345,12 +376,12 @@ body {
   align-items: center;
   justify-content: center;
 
-  background-color: rgba(26, 26, 26, 0.85);
+  background-color: rgba(26, 26, 26, 0.9);
 
   &--golden &__count {
-    color: gold;
+    color: $gold-color;
 
-    border-color: gold;
+    border-color: $gold-color;
   }
 
   &__count {
@@ -373,7 +404,7 @@ body {
 
     padding: 0;
     max-width: 1200px;
-    margin-bottom: -35px;
+    margin: 0 30px;
   }
 
   &__item {
@@ -384,18 +415,40 @@ body {
     margin: 0 12px 35px;
   }
 
+  &__golden-share-wrapper {
+    color: $gold-color;
+  }
+
   &__golden-share {
     flex-shrink: 0;
+    color: $gold-color;
+    border-image: $gold-gradient;
+    border-image-slice: 1;
+
+    box-shadow: 0 0 50px 0 rgba(255, 212, 0, 0.3);
+    transition: box-shadow $hover-transition-duration ease-in-out;
+
+    &:hover {
+      opacity: 1;
+      box-shadow: 0 0 50px 0 rgba(255, 212, 0, 0.7);
+    }
   }
 
   &__clear {
     flex-shrink: 0;
-    margin: 30px 0 30px;
+    margin: 30px 0 35px;
 
     color: $white-color;
     font-family: $sans;
     font-size: 12px;
     text-decoration: underline;
+
+    transition: opacity $hover-transition-duration;
+
+    &:hover {
+      text-decoration: none;
+      opacity: 0.6;
+    }
   }
 }
 
@@ -404,10 +457,11 @@ body {
   flex-direction: column;
   align-items: center;
 
-  height: 175px;
+  height: 185px;
+  transition: transform $hover-transition-duration ease-in-out;
 
-  &--opened {
-    cursor: pointer;
+  &--opened:hover {
+    transform: translateY(-5px);
   }
 
   &__frame {
@@ -429,8 +483,8 @@ body {
     align-items: center;
     justify-content: center;
 
-    width: 103px;
-    height: 115px;
+    width: 104px;
+    height: 119px;
 
     border: solid $white-color 2px;
     border-radius: 100%;
@@ -458,17 +512,22 @@ body {
     justify-content: center;
 
     position: absolute;
-    bottom: -22px;
+    bottom: -27px;
 
     width: 30px;
     height: 30px;
     border-radius: 100%;
 
     background-color: $white-color;
+
+    > * {
+      position: relative;
+      top: 1px;
+    }
   }
 
   &__name {
-    margin-top: 15px;
+    margin-top: 20px;
 
     color: $white-color;
     font-family: $sans;
@@ -477,11 +536,11 @@ body {
   }
 
   &--golden &__frame {
-    border-color: gold;
+    border-color: $gold-color;
   }
 
   &--golden &__check {
-    background-color: gold;
+    background-image: $gold-gradient;
   }
 }
 
@@ -536,14 +595,14 @@ body {
     &--strong {
       display: inline-block;
 
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 60px;
       line-height: 60px;
     }
   }
 
   &__separator {
-    margin-top: 20px;
+    margin-top: 5px;
     margin-bottom: 35px;
   }
 
@@ -552,6 +611,12 @@ body {
     padding: 0 30px;
     height: 60px;
   }
+}
+
+@keyframes super-gradient {
+  0%{background-position:94% 0%}
+  50%{background-position:7% 100%}
+  100%{background-position:94% 0%}
 }
 
 .xx-share-window {
@@ -567,13 +632,27 @@ body {
   background-color: $white-color;
 
   transition: .2s opacity;
+  position: relative;
+
+  &--golden {
+    background: url('#{$resources-folder}/images/noise.png') 250px 250px repeat, $gold-gradient;
+  }
+
+  &--super {
+    border: 5px solid transparent;
+    background: linear-gradient($white-color, $white-color), linear-gradient(to top right, #f00, #00f, #0ff, #0f0, #ff0, #f00);
+    background-size: 1200%;
+    background-clip: padding-box, border-box;
+    background-origin: border-box;
+    animation: super-gradient 1s ease infinite;
+  }
 
   &__title-wrapper {
     position: relative;
     color: #e5e5e5;
 
-    padding-bottom: 15px;
-    margin-bottom: 25px;
+    padding-bottom: 22px;
+    margin-bottom: 30px;
 
     &::after {
       content: '';
@@ -590,7 +669,16 @@ body {
     }
   }
 
+  &--golden &__title-wrapper {
+    color: $black-color;
+  }
+
+  &--super &__title {
+    @include gradient-text('linear-gradient(to right, #f00, #00f, #0ff, #0f0, #ff0, #f00)', 'light');
+  }
+
   &__title {
+    color: $black-color;
     font-family: $serif;
     font-size: 30px;
     font-weight: 800;
@@ -603,12 +691,38 @@ body {
     background-color: $black-color;
   }
 
+  .xx-share {
+    color: #bebebe;
+  }
+
+  &--golden .xx-share {
+    color: $black-color;
+  }
+
+  &--golden .social a {
+    border-color: $black-color;
+  }
+
   &__buttons {
-    margin: 25px 0;
+    margin: 25px 0 30px;
+  }
+
+  &__text {
+    text-align: center;
+    font-family: $serif;
+    font-size: 15px;
+    line-height: 20px;
+
+    margin-top: -7px;
+    margin-bottom: 25px;
   }
 
   &__button-wrapper {
     color: #e5e5e5;
+  }
+
+  &--golden &__button-wrapper {
+    color: $black-color;
   }
 }
 
@@ -623,12 +737,70 @@ body {
 }
 
 .xx-btn-icon {
+  position: relative;
   height: 60px;
   width: 60px;
 
   border-radius: 100%;
-  border: 3px solid #545454;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  color: $white-color;
   cursor: pointer;
+  transition: border-color $hover-transition-duration;
+
+  &:hover {
+    border: 3px solid $white-color;
+  }
+
+  &--pulsing {
+    animation: white-icon-pulse 0.3s ease-in-out 4 alternate;
+  }
+
+  &--golden {
+    color: $gold-color;
+    border-color: rgba(255, 212, 0, 0.7);
+    box-shadow: 0 0 20px 5px rgba(255, 212, 0, 0.3);
+
+    &:hover {
+      border-color: $gold-color;
+    }
+  }
+
+  &--golden.xx-btn-icon--pulsing {
+    animation: gold-icon-pulse 0.25s ease-in-out 4 alternate;
+  }
+
+  &__counter {
+    position: absolute;
+    right: -9px;
+    bottom: -9px;
+
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+
+    border-radius: 50%;
+    background-color: #f30;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: $sans;
+    text-align: center;
+  }
+}
+
+@keyframes white-icon-pulse {
+  100% {
+    border-color: $white-color;
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes gold-icon-pulse {
+  100% {
+    border-color: rgba(255, 212, 0, 1);
+    box-shadow: 0 0 100px 5px rgba(255, 212, 0, 0.7);
+  }
 }
 
 .xx-flash {

@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import CheckIcon from '../components/CheckIcon';
+import CheckIcon from './CheckIcon';
 import walkers from '../walkers.json';
-import {isGolden} from '../containers/Game';
+import FancySeparator from './FancySeparator';
+import {areAllCollected} from '../containers/Game';
 
 class Gallery extends React.Component {
   render() {
-    const {visible, share, metWalkers} = this.props;
-    const golden = isGolden(metWalkers);
+    const {visible, share, metWalkers, shareGolden, clearResults} = this.props;
+    const golden = areAllCollected(metWalkers);
 
     return (
       <div className={classNames({
@@ -22,17 +23,27 @@ class Gallery extends React.Component {
             "xx-gallery--golden": golden
           })}>
             <div className="xx-gallery__count">
-              {Object.keys(metWalkers).length}/{walkers.length}
+              {Object.keys(metWalkers).filter(key => walkers.find(walker => walker.id === key)).length}/{walkers.length}
             </div>
             {
               golden &&
-              <button className="xx-btn xx-btn--big xx-gallery__golden-share">
-                Золотой шар
-              </button>
+              <FancySeparator
+                className="xx-gallery__golden-share-wrapper"
+              >
+                <button
+                  className="xx-btn xx-btn--big xx-gallery__golden-share"
+                  onClick={shareGolden}
+                >
+                  Золотой шар
+                </button>
+              </FancySeparator>
             }
             {
               golden &&
-              <button className="xx-btn-unstyled xx-gallery__clear">
+              <button
+                className="xx-btn-unstyled xx-gallery__clear"
+                onClick={clearResults}
+              >
                 Сбросить все результаты
               </button>
             }
@@ -40,17 +51,19 @@ class Gallery extends React.Component {
               {
                 walkers.map((walker, index) => {
                   const isOpened = Object.keys(metWalkers).find(item => item === walker.id);
+                  const Tag = isOpened ? "button" : "div";
 
                   return (
                     <li
                       className="xx-gallery__item"
                       key={index}
                     >
-                      <div
+                      <Tag
                         key={index}
                         className={
                           classNames({
                             "xx-gallery-walker": true,
+                            "xx-btn-unstyled": isOpened,
                             "xx-gallery-walker--golden": golden,
                             "xx-gallery-walker--opened": isOpened
                           })
@@ -66,7 +79,7 @@ class Gallery extends React.Component {
                               })
                             }
                             style={{
-                              backgroundImage: isOpened ? "url(https://s3.eu-central-1.amazonaws.com/arzamas-static/x/338-new-year-jhtUdfkkqdp4is/1241/images/walkers/tolstoi.png)" : null
+                              backgroundImage: isOpened ? `url(https://cdn-s-static.arzamas.academy/x/338-new-year-jhtUdfkkqdp4is/1241/images/walkers/${walker.id}.png)` : null
                             }}
                           >
                             {
@@ -83,7 +96,7 @@ class Gallery extends React.Component {
                             {walker.name}
                           </div>
                         }
-                      </div>
+                      </Tag>
                     </li>
                   );
                 })

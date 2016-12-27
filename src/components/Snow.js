@@ -5,7 +5,6 @@ class Snow extends React.Component {
     var w = el.getBoundingClientRect().width,
       h = el.getBoundingClientRect().height,
       ctx = el.getContext('2d'),
-      rate = 50,
       arc = 500,
       time,
       count,
@@ -54,7 +53,7 @@ class Snow extends React.Component {
       if(time < speed) {
         time++;
       }
-      setTimeout(bubble,1000/rate);
+      requestAnimationFrame(bubble);
     }
     init();
     bubble();
